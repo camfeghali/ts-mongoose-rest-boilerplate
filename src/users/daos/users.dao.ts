@@ -4,12 +4,6 @@ import shortid from 'shortid';
 import debug from 'debug';
 
 const log: debug.IDebugger = debug('app:in-memory-dao');
-const allowedPatchFields = [
-    'password',
-    'firstName',
-    'lastName',
-    'permissionLevel',
-];
 
 class UsersDao {
     constructor() {
