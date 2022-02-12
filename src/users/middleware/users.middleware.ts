@@ -14,7 +14,6 @@ class UsersMiddleWare {
         res: Response,
         next: NextFunction
     ) => {
-        console.log(req.body);
         if (this.isValidRequestBody(req.body)) {
             next();
         } else {

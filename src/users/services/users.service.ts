@@ -13,13 +13,13 @@ class UsersService implements CRUD {
         return UsersDao.getUsers();
     }
     async patchById(id: string, resource: PatchUserDto) {
-        return UsersDao.patchUserById(id, resource);
+        return UsersDao.updateUserById(id, resource);
     }
     async readById(id: string) {
         return UsersDao.getUserById(id);
     }
     async putById(id: string, resource: PutUserDto) {
-        return UsersDao.putUserById(id, resource);
+        return UsersDao.updateUserById(id, resource);
     }
     async getUserByEmail(email: string) {
         return UsersDao.getUserByEmail(email);
