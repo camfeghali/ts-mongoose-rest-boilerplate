@@ -12,65 +12,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_service_1 = __importDefault(require("../../common/services/mongoose.service"));
-const shortid_1 = __importDefault(require("shortid"));
 const debug_1 = __importDefault(require("debug"));
 const log = (0, debug_1.default)('app:in-memory-dao');
-const allowedPatchFields = [
-    'password',
-    'firstName',
-    'lastName',
-    'permissionLevel',
-];
 class UsersDao {
-    constructor() {
-        this.Schema = mongoose_service_1.default.getMongoose().Schema;
-        this.userSchema = new this.Schema({
-            _id: String,
-            email: String,
-            password: { type: String, select: false },
-            firstName: String,
-            lastName: String,
-            permissionFlags: Number,
-        }, { id: false });
-        this.User = mongoose_service_1.default.getMongoose().model('Users', this.userSchema);
-        log('Create a new instance of User');
+    constructor(db) {
+        log('Create a new instance of UserDao');
+        this.db = db;
     }
-    addUser(userFields) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const userId = shortid_1.default.generate();
-            const user = new this.User(Object.assign(Object.assign({ _id: userId }, userFields), { permissionFlags: 1 }));
-            yield user.save();
-            return userId;
-        });
-    }
-    getUserByEmail(email) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.User.findOne({ email: email }).exec();
-        });
-    }
-    getUserById(userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.User.findOne({ _id: userId }).exec();
-        });
-    }
+    // Schema = mongooseService.getMongoose().Schema;
+    // userSchema = new this.Schema(
+    //     {
+    //         _id: String,
+    //         email: String,
+    //         password: { type: String, select: false },
+    //         firstName: String,
+    //         lastName: String,
+    //         permissionFlags: Number,
+    //     },
+    //     { id: false }
+    // );
+    // User = mongooseService.getMongoose().model('Users', this.userSchema);
+    // async addUser(userFields: CreateUserDto) {
+    //     const userId = shortid.generate();
+    //     const user = new this.User({
+    //         _id: userId,
+    //         ...userFields,
+    //         permissionFlags: 1,
+    //     });
+    //     await user.save();
+    //     return userId;
+    // }
+    // async getUserByEmail(email: string) {
+    //     return this.User.findOne({ email: email }).exec();
+    // }
+    // async getUserById(userId: string) {
+    //     return this.User.findOne({ _id: userId }).exec();
+    // }
     getUsers(limit = 25, page = 0) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.User.find()
-                .limit(limit)
-                .skip(limit * page)
-                .exec();
-        });
-    }
-    updateUserById(userId, userFields) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const existingUser = yield this.User.findOneAndUpdate({ _id: userId }, { $set: userFields }, { new: true }).exec();
-            return existingUser;
-        });
-    }
-    removeUserById(userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.User.deleteOne({ _id: userId }).exec();
+            return this.db.getAll('users', limit, page);
         });
     }
 }
