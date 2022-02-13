@@ -52,7 +52,7 @@ class UsersMiddleWare {
     validateSameEmailBelongToSameUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield users_service_1.default.getUserByEmail(req.body.email);
-            if (user && user.id === req.params.userId) {
+            if (user && user._id === req.params.userId) {
                 next();
             }
             else {

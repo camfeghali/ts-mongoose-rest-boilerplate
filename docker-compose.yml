@@ -6,3 +6,13 @@ services:
             - ./data:/data/db
         ports:
             - '27017:27017'
+
+    mysql:
+        platform: linux/x86_64
+        image: mysql:5.7
+        restart: unless-stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: demo
+        ports:
+            - '3306:3306'

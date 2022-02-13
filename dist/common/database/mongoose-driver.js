@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const debug_1 = __importDefault(require("debug"));
+const shortid_1 = __importDefault(require("shortid"));
 const log = (0, debug_1.default)('app:mongoose-service');
 const mongooseOptions = {
     useNewUrlParser: true,
@@ -52,7 +53,7 @@ class MongooseDriver {
     getAll(table, limit, page) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield mongoose_1.default
-                .model(table, this.userSchema)
+                .model(table)
                 .find()
                 .limit(limit)
                 .skip(limit * page)
@@ -60,7 +61,35 @@ class MongooseDriver {
         });
     }
     getById(id, table) {
-        return {};
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield mongoose_1.default.model(table).findOne({ _id: id }).exec();
+        });
+    }
+    getBy(query, table) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield mongoose_1.default.model(table).findOne(query).exec();
+        });
+    }
+    insert(fields, table) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let recordId = shortid_1.default.generate();
+            let recordSchema = mongoose_1.default.model(table);
+            let record = new recordSchema(Object.assign({ _id: recordId }, fields));
+            yield record.save();
+        });
+    }
+    update(id, fields, table) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield mongoose_1.default
+                .model(table)
+                .findOneAndUpdate({ _id: id }, { $set: fields }, { new: true })
+                .exec();
+        });
+    }
+    delete(id, table) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return mongoose_1.default.model(table).deleteOne({ _id: id }).exec();
+        });
     }
 }
 exports.default = new MongooseDriver();

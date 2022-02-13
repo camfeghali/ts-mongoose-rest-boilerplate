@@ -4,6 +4,8 @@ import shortid from 'shortid';
 import debug from 'debug';
 import { IDatabase } from '../../common/database/database';
 import MongooseDriver from '../../common/database/mongoose-driver';
+import MySqlDriver from '../../common/database/mysql-driver';
+import mysqlDriver from '../../common/database/mysql-driver';
 
 const log: debug.IDebugger = debug('app:in-memory-dao');
 
@@ -53,4 +55,4 @@ class UsersDao implements IModel {
 // Any file importing users.dao.ts will be handed a reference to
 // the exported new User() instance.
 // this is a in-memory dao
-export default new UsersDao(MongooseDriver);
+export default new UsersDao(MySqlDriver);

@@ -13,44 +13,42 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const debug_1 = __importDefault(require("debug"));
+const mysql_driver_1 = __importDefault(require("../../common/database/mysql-driver"));
 const log = (0, debug_1.default)('app:in-memory-dao');
 class UsersDao {
     constructor(db) {
+        this.table = 'users';
         log('Create a new instance of UserDao');
         this.db = db;
     }
-    // Schema = mongooseService.getMongoose().Schema;
-    // userSchema = new this.Schema(
-    //     {
-    //         _id: String,
-    //         email: String,
-    //         password: { type: String, select: false },
-    //         firstName: String,
-    //         lastName: String,
-    //         permissionFlags: Number,
-    //     },
-    //     { id: false }
-    // );
-    // User = mongooseService.getMongoose().model('Users', this.userSchema);
-    // async addUser(userFields: CreateUserDto) {
-    //     const userId = shortid.generate();
-    //     const user = new this.User({
-    //         _id: userId,
-    //         ...userFields,
-    //         permissionFlags: 1,
-    //     });
-    //     await user.save();
-    //     return userId;
-    // }
-    // async getUserByEmail(email: string) {
-    //     return this.User.findOne({ email: email }).exec();
-    // }
-    // async getUserById(userId: string) {
-    //     return this.User.findOne({ _id: userId }).exec();
-    // }
     getUsers(limit = 25, page = 0) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.db.getAll('users', limit, page);
+            return yield this.db.getAll(this.table, limit, page);
+        });
+    }
+    addUser(userFields) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.db.insert(userFields, this.table);
+        });
+    }
+    getUserByEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.db.getBy({ email }, this.table);
+        });
+    }
+    getUserById(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.db.getById(userId, this.table);
+        });
+    }
+    updateUserById(userId, userFields) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.db.update(userId, userFields, this.table);
+        });
+    }
+    removeUserById(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.db.delete(userId, this.table);
         });
     }
 }
@@ -58,4 +56,4 @@ class UsersDao {
 // Any file importing users.dao.ts will be handed a reference to
 // the exported new User() instance.
 // this is a in-memory dao
-exports.default = new UsersDao();
+exports.default = new UsersDao(mysql_driver_1.default);

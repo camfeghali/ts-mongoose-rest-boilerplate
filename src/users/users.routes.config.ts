@@ -9,14 +9,11 @@ export class UsersRoutes extends CommonRoutesConfig {
     }
 
     configureRoutes(): Application {
-        this.app
-            .route('/users')
-            .get(UsersController.listUsers)
-            .post(
-                UsersMiddleWare.validateRequiredUserBodyFields,
-                UsersMiddleWare.validateSameEmailDoesntExist,
-                UsersController.createUser
-            );
+        this.app.route('/users').get(UsersController.listUsers).post(
+            UsersMiddleWare.validateRequiredUserBodyFields,
+            // UsersMiddleWare.validateSameEmailDoesntExist,
+            UsersController.createUser
+        );
 
         this.app.param(`userId`, UsersMiddleWare.extractUserId);
         this.app

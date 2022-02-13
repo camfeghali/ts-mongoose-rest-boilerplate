@@ -14,12 +14,14 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@types/mysql": "^2.15.21",
         "argon2": "^0.28.4",
         "cors": "^2.8.5",
         "debug": "^4.3.3",
         "express": "^4.17.2",
         "express-winston": "^4.2.0",
         "mongoose": "^6.2.1",
+        "mysql2": "^2.3.3",
         "shortid": "^2.2.16",
         "winston": "^3.5.1"
     },
