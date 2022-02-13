@@ -21,31 +21,31 @@ class UsersDao implements IModel {
         this.db = db;
     }
 
+    async getUsers(limit = 25, page = 0) {
+        return await this.db.getAll(this.table, limit, page);
+    }
+
     async addUser(userFields: CreateUserDto) {
-        return await this.db.insert(userFields, 'users');
+        return await this.db.insert(userFields, this.table);
     }
 
     async getUserByEmail(email: string) {
-        return await this.db.getBy({ email }, 'users');
+        return await this.db.getBy({ email }, this.table);
     }
 
     async getUserById(userId: string) {
-        return await this.db.getById(userId, 'users');
-    }
-
-    async getUsers(limit = 25, page = 0) {
-        return await this.db.getAll('users', limit, page);
+        return await this.db.getById(userId, this.table);
     }
 
     async updateUserById(
         userId: string,
         userFields: PatchUserDto | PutUserDto
     ) {
-        return await this.db.update(userId, userFields, 'users');
+        return await this.db.update(userId, userFields, this.table);
     }
 
     async removeUserById(userId: string) {
-        return this.db.delete(userId, 'users');
+        return this.db.delete(userId, this.table);
     }
 }
 

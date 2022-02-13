@@ -62,11 +62,10 @@ class MongooseDriver implements IDatabase {
     }
 
     async update(id: string, fields: object, table: string) {
-        const record = await mongoose
+        return await mongoose
             .model(table)
             .findOneAndUpdate({ _id: id }, { $set: fields }, { new: true })
             .exec();
-        return record;
     }
 
     async delete(id: string, table: string) {
