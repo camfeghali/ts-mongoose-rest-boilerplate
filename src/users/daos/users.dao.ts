@@ -1,11 +1,9 @@
 import { CreateUserDto, PutUserDto, PatchUserDto } from '../dto';
-import mongooseService from '../../common/services/mongoose.service';
 import shortid from 'shortid';
 import debug from 'debug';
 import { IDatabase } from '../../common/database/database';
 import MongooseDriver from '../../common/database/mongoose-driver';
 import MySqlDriver from '../../common/database/mysql-driver';
-import mysqlDriver from '../../common/database/mysql-driver';
 
 const log: debug.IDebugger = debug('app:in-memory-dao');
 
