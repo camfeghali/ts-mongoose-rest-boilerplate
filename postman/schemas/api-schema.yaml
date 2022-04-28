@@ -1,0 +1,31 @@
+openapi: 3.0.1
+info:
+  title: defaultTitle
+  description: defaultDescription
+  version: '0.1'
+servers:
+  - url: https://dog.ceo
+paths:
+  /api/breeds/image/random:
+    get:
+      description: Auto generated using Swagger Inspector
+      responses:
+        '200':
+          description: Auto generated using Swagger Inspector
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  status:
+                    type: string
+              examples:
+                '0':
+                  value: >-
+                    {"message":"https:\/\/images.dog.ceo\/breeds\/cockapoo\/bubbles2.jpg","status":"success"}
+      servers:
+        - url: https://dog.ceo
+    servers:
+      - url: https://dog.ceo
